@@ -16,12 +16,7 @@
         </div>
 
         <div class="condations-box">
-            <div class="major-range clearfix">
-                <div class="left-title">专业层次:</div>
-                <div class="right-selected">
-
-                </div>
-            </div>
+            <major-range></major-range>
 
             <school-range :school-range-list="$store.state.school_range_obj"></school-range>
 
@@ -29,17 +24,26 @@
 
         </div>
 
-         <div class="main">
+        <div class="main">
             <h3>选考科目分析</h3>
-             <p class="remind">
+            <p class="remind">
                 科目比例：要求所选选考科目的专业总数/条件范围内专业总数。以专业为例：经济统计学专业历史所占比例为66.7%，意为选考历史，66.7%的经济统计学专业均可报考。
             </p>
+            <div class="test_wrap">
+                  <test-item :testdata="$store.state.test_left"></test-item>
+                  <test-item :testdata="$store.state.test_right"></test-item>    
+            </div>
         </div>
+
+        <table-wrap></table-wrap>
     </div>
 </template>
 <script>
-import school_range from '../components/school_range.vue'
-import school_area from '../components/school_area.vue'
+import school_range from '../components/school_range.vue';
+import school_area from '../components/school_area.vue';
+import major_range from "../components/major_range.vue";
+import table_wrap from "../components/table_wrap.vue";
+import test_item from "../components/test_item.vue";
 export default {
     data: function() {
         return {
@@ -66,11 +70,24 @@ export default {
             })
             this.$store.commit('updated_school_area', area_data);
         });
-
+        this.$http.get("src/server/table.json").then((res) => {
+            this.$store.commit('table_title', res.data.result.title);
+        });
+        this.$http.get("src/server/table.json").then((res) => {
+            this.$store.commit('table_item', res.data.result.rows);
+        });
+        this.$http.get("src/server/table.json").then((res) => {
+            this.$store.commit('test_data', res.data.result.analysisData);
+            var len=this.$store.state.test_data.length/2;
+            this.$store.commit('test_left',len); 
+        });
     },
     components: {
         "school-range": school_range,
-        "school-area": school_area
+        "school-area": school_area,
+        "major-range": major_range,
+        "table-wrap": table_wrap,
+        "test-item": test_item
     },
     methods: {
         clearRange: function() {
@@ -83,12 +100,13 @@ export default {
 }
 </script>
 <style scoped>
-
 .left-title,
 .right-selected {
     float: left;
 }
-
+.table_one{
+    border:1px solid #ccc;
+}
 .condations-box {
     border: 1px solid #ccc;
     padding: 10px;
@@ -110,9 +128,6 @@ export default {
 .clearfix:after {
     clear: both;
 }
-
-
-
 
 
 /**

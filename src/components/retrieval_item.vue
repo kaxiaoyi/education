@@ -16,21 +16,8 @@ export default {
         }
     },
     props: ["retrieval",'id'],
-    created: function() {
-        console.log(this.id)
-
-    },
-    // updated: function() {
-    //     for (var key in this.retrieval) {
-    //         if(this.retrieval[key].collegesCount == this.id){
-    //             this.retrieval =  this.retrieval 
-    //             // console.log(this.retrieval[key]);           
-    //         }
-    //     }
-    // },
     filters: {  
-    filterFun: function (value) {  
-        console.log(value)
+    filterFun: function (value) { 
       return value  
     }  
   }  

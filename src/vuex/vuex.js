@@ -8,7 +8,12 @@ let store = new Vuex.Store({
     state: {
         school_range_obj: [],
         school_area_obj: [],
-        retrieval_list_data:{}
+        retrieval_list_data:{},
+        table_title:[],
+        table_item:[],
+        test_data:[],
+        test_left:[],
+        test_right:[]
     },
     mutations: {
         updated_school_range: function (state, list) {
@@ -76,6 +81,19 @@ let store = new Vuex.Store({
         },
         retrieval:function(state,list){
                     state.retrieval_list_data=list.result.analysisData;
+        },
+        table_title:(state,list)=>{
+            state.table_title=list;
+        },
+        table_item:(state,list)=>{
+            state.table_item=list;
+        },
+        test_data:function(state,list){
+            state.test_data=list;
+        },
+        test_left:function(state,len){
+           state.test_left=state.test_data.slice(0,len);
+           state.test_right=state.test_data.slice((len-1),state.test_data.length-1);
         }
     },
     getters:{

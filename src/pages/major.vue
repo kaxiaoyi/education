@@ -12,36 +12,41 @@
             </p>
         </div>
 
-        <div class="retrieval_list">
-            <div class="retrieval_list_tit" id="1">
-                <ol id="1">
-                    <li>选考科目</li>
-                    <li>专业(类)数</li>
-                    <li>科目比例</li>
-                </ol>
-                <retrieval-item :retrieval="$store.state.retrieval_list_data" :id="1"></retrieval-item>
-            </div>
-            <div class="retrieval_list_tit" id="2">
-                <ol id="1">
-                    <li>选考科目</li>
-                    <li>专业(类)数</li>
-                    <li>科目比例</li>
-                </ol>
-                <retrieval-item :retrieval="$store.state.retrieval_list_data" :id="2"></retrieval-item>
-            </div>
-            <div class="retrieval_list_tit" id="3">
-                <ol id="1">
-                    <li>选考科目</li>
-                    <li>专业(类)数</li>
-                    <li>科目比例</li>
-                </ol>
-                    <retrieval-item :retrieval="$store.state.retrieval_list_data" :id="3"></retrieval-item>
-            </div>
+        <div class="test_wrap">
+            <test-item :testdata="$store.state.test_left"></test-item>
+            <test-item :testdata="$store.state.test_right"></test-item>
         </div>
+        <!-- <div class="retrieval_list">
+                <div class="retrieval_list_tit" id="1">
+                    <ol id="1">
+                        <li>选考科目</li>
+                        <li>专业(类)数</li>
+                        <li>科目比例</li>
+                    </ol>
+                    <retrieval-item :retrieval="$store.state.retrieval_list_data" :id="1"></retrieval-item>
+                </div>
+                <div class="retrieval_list_tit" id="2">
+                    <ol id="1">
+                        <li>选考科目</li>
+                        <li>专业(类)数</li>
+                        <li>科目比例</li>
+                    </ol>
+                    <retrieval-item :retrieval="$store.state.retrieval_list_data" :id="2"></retrieval-item>
+                </div>
+                <div class="retrieval_list_tit" id="3">
+                    <ol id="1">
+                        <li>选考科目</li>
+                        <li>专业(类)数</li>
+                        <li>科目比例</li>
+                    </ol>
+                        <retrieval-item :retrieval="$store.state.retrieval_list_data" :id="3"></retrieval-item>
+                </div>
+            </div> -->
     </div>
 </template>
 <script>
-import retrieval_item from "../components/retrieval_item.vue"
+import retrieval_item from "../components/retrieval_item.vue";
+import test_item from "../components/test_item.vue";
 export default {
     data() {
         return {
@@ -57,9 +62,15 @@ export default {
         this.$http.get("src/server/retrievalData.json").then((res) => {
             this.$store.commit("retrieval", res.data);
         })
+         this.$http.get("src/server/table.json").then((res) => {
+            this.$store.commit('test_data', res.data.result.analysisData);
+            var len=this.$store.state.test_data.length/2;
+            this.$store.commit('test_left',len); 
+        });
     },
     components: {
-        "retrieval-item": retrieval_item
+        "retrieval-item": retrieval_item,
+        "test-item": test_item
     }
 
 }
